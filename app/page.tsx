@@ -32,9 +32,7 @@ export default async function HomePage() {
                 <span className="underline decoration-4 underline-offset-4">Daffa</span>
               </h1>
               <p className="text-base md:text-lg font-medium text-gray-800 mb-8 leading-relaxed">
-                Junior Software Engineer building scalable web, mobile, and
-                automation systems. Started with game server scripting in 2020,
-                now deep in full-stack development.
+                Junior Software Engineer who develops scalable websites and web applications. Started my career as a technology enthusiast and jumped into programming, specifically as a front-end developer. My side studies include AI with coding vibes, which is currently a hot topic.
               </p>
               <div className="flex flex-wrap gap-3">
                 <Link

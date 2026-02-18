@@ -10,7 +10,7 @@ export default function Footer() {
         <div className="flex justify-center gap-4 mb-8">
           {[
             { icon: Github, href: "https://github.com/Dappzzz-Dev", label: "GitHub" },
-            { icon: Linkedin, href: "https://www.linkedin.com/in/%20dappdev-len140428", label: "LinkedIn" },
+            { icon: Linkedin, href: "https://www.linkedin.com/in/dappdev-len140428", label: "LinkedIn" },
             { icon: Twitter, href: "#", label: "Twitter" },
             { icon: Instagram, href: "https://www.instagram.com/dapp.daffadev?igsh=MjVrM3pycTcxbWx2", label: "Instagram" },
           ].map(({ icon: Icon, href, label }) => (
