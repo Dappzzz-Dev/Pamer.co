@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { createServerSupabaseClient } from "@/lib/supabase-server";
-import { LayoutDashboard, FolderOpen, Plus, LogOut } from "lucide-react";
+import { LayoutDashboard, FolderOpen, Plus, LogOut, Tag } from "lucide-react";
 import LogoutButton from "./LogoutButton";
 
 export default async function DashboardLayout({
@@ -39,6 +39,12 @@ export default async function DashboardLayout({
             className="flex items-center gap-2.5 px-3 py-2 text-sm font-semibold hover:bg-yellow transition-colors"
           >
             <FolderOpen size={16} /> Projects
+          </Link>
+          <Link
+            href="/dashboard/categories"
+            className="flex items-center gap-2.5 px-3 py-2 text-sm font-semibold hover:bg-yellow transition-colors"
+          >
+            <Tag size={16} /> Categories
           </Link>
           <Link
             href="/dashboard/add"

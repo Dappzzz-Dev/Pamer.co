@@ -6,20 +6,23 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ProjectCard from "@/components/ProjectCard";
 import { createClient } from "@/lib/supabase-client";
-import { CATEGORIES, Project } from "@/lib/types";
+import { Project, Category } from "@/lib/types";
 
 const PROJECTS_PER_PAGE = 6;
 
 export default function ProjectsPage() {
   const [projects, setProjects] = useState<Project[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [activeCategory, setActiveCategory] = useState<string>("All");
   const [sortOrder, setSortOrder] = useState<"newest" | "oldest">("newest");
   const [page, setPage] = useState(1);
 
+  const supabase = createClient();
+
   useEffect(() => {
-    const supabase = createClient();
+    // Fetch projects
     supabase
       .from("projects")
       .select("*")
@@ -27,6 +30,15 @@ export default function ProjectsPage() {
       .then(({ data }) => {
         setProjects(data ?? []);
         setLoading(false);
+      });
+
+    // Fetch categories
+    supabase
+      .from("categories")
+      .select("*")
+      .order("name")
+      .then(({ data }) => {
+        setCategories(data ?? []);
       });
   }, []);
 
@@ -97,17 +109,29 @@ export default function ProjectsPage() {
           {/* Categories + Sort */}
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div className="flex flex-wrap gap-2">
-              {CATEGORIES.map((cat) => (
+              {/* All button */}
+              <button
+                onClick={() => setActiveCategory("All")}
+                className={`brutalist-btn text-xs transition-colors ${
+                  activeCategory === "All"
+                    ? "bg-border text-bg-card"
+                    : "bg-bg-card"
+                }`}
+              >
+                All
+              </button>
+              {/* Category buttons */}
+              {categories.map((cat) => (
                 <button
-                  key={cat}
-                  onClick={() => setActiveCategory(cat)}
+                  key={cat.id}
+                  onClick={() => setActiveCategory(cat.name)}
                   className={`brutalist-btn text-xs transition-colors ${
-                    activeCategory === cat
+                    activeCategory === cat.name
                       ? "bg-border text-bg-card"
                       : "bg-bg-card"
                   }`}
                 >
-                  {cat}
+                  {cat.name}
                 </button>
               ))}
             </div>

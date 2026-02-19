@@ -1,11 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { Upload, X, Plus } from "lucide-react";
 import { createClient } from "@/lib/supabase-client";
-import { CATEGORIES, Project } from "@/lib/types";
+import { Project, Category } from "@/lib/types";
 
 interface Props {
   initialData?: Partial<Project>;
@@ -16,17 +16,37 @@ export default function ProjectForm({ initialData, mode }: Props) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [categories, setCategories] = useState<Category[]>([]);
 
   const [title, setTitle] = useState(initialData?.title ?? "");
   const [description, setDescription] = useState(initialData?.description ?? "");
   const [year, setYear] = useState(initialData?.year?.toString() ?? new Date().getFullYear().toString());
-  const [category, setCategory] = useState(initialData?.category ?? "Web Application");
+  const [category, setCategory] = useState(initialData?.category ?? "");
   const [techInput, setTechInput] = useState("");
   const [techStack, setTechStack] = useState<string[]>(initialData?.tech_stack ?? []);
   const [githubUrl, setGithubUrl] = useState(initialData?.github_url ?? "");
   const [liveUrl, setLiveUrl] = useState(initialData?.live_url ?? "");
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string>(initialData?.image_url ?? "");
+
+  const supabase = createClient();
+
+  // Fetch categories on mount
+  useEffect(() => {
+    const fetchCategories = async () => {
+      const { data } = await supabase
+        .from("categories")
+        .select("*")
+        .order("name");
+      setCategories(data ?? []);
+      
+      // Set default category if adding new project
+      if (mode === "add" && data && data.length > 0 && !category) {
+        setCategory(data[0].name);
+      }
+    };
+    fetchCategories();
+  }, []);
 
   const addTech = () => {
     const trimmed = techInput.trim();
@@ -171,10 +191,12 @@ export default function ProjectForm({ initialData, mode }: Props) {
             value={category}
             onChange={(e) => setCategory(e.target.value)}
             className="brutalist-input cursor-pointer"
+            required
           >
-            {CATEGORIES.filter((c) => c !== "All").map((cat) => (
-              <option key={cat} value={cat}>
-                {cat}
+            <option value="">-- Select Category --</option>
+            {categories.map((cat) => (
+              <option key={cat.id} value={cat.name}>
+                {cat.name}
               </option>
             ))}
           </select>

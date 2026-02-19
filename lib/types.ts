@@ -11,11 +11,8 @@ export type Project = {
   created_at: string;
 };
 
-export const CATEGORIES = [
-  "All",
-  "Web Application",
-  "Bot & Automation",
-  "Desktop Application",
-  "Library",
-  "Scripts",
-] as const;
+export type Category = {
+  id: string;
+  name: string;
+  created_at: string;
+};

@@ -4,7 +4,14 @@
 -- Dashboard -> SQL Editor -> New query
 -- =============================================
 
--- 1. Buat tabel projects
+-- 1. Buat tabel categories
+CREATE TABLE public.categories (
+  id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
+  name text NOT NULL UNIQUE,
+  created_at timestamptz DEFAULT now() NOT NULL
+);
+
+-- 2. Buat tabel projects
 CREATE TABLE public.projects (
   id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
   title text NOT NULL,
@@ -20,13 +27,19 @@ CREATE TABLE public.projects (
 
 -- 2. Enable Row Level Security
 ALTER TABLE public.projects ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.categories ENABLE ROW LEVEL SECURITY;
 
 -- 3. Policy: semua orang bisa READ (public gallery)
 CREATE POLICY "Anyone can read projects"
   ON public.projects FOR SELECT
   USING (true);
 
+CREATE POLICY "Anyone can read categories"
+  ON public.categories FOR SELECT
+  USING (true);
+
 -- 4. Policy: hanya authenticated user (kamu) yang bisa INSERT, UPDATE, DELETE
+-- Projects policies
 CREATE POLICY "Authenticated users can insert"
   ON public.projects FOR INSERT
   WITH CHECK (auth.role() = 'authenticated');
@@ -37,6 +50,19 @@ CREATE POLICY "Authenticated users can update"
 
 CREATE POLICY "Authenticated users can delete"
   ON public.projects FOR DELETE
+  USING (auth.role() = 'authenticated');
+
+-- Categories policies
+CREATE POLICY "Authenticated users can insert categories"
+  ON public.categories FOR INSERT
+  WITH CHECK (auth.role() = 'authenticated');
+
+CREATE POLICY "Authenticated users can update categories"
+  ON public.categories FOR UPDATE
+  USING (auth.role() = 'authenticated');
+
+CREATE POLICY "Authenticated users can delete categories"
+  ON public.categories FOR DELETE
   USING (auth.role() = 'authenticated');
 
 -- =============================================
@@ -66,14 +92,26 @@ CREATE POLICY "Authenticated users can delete"
 -- =============================================
 -- SAMPLE DATA (opsional, untuk testing)
 -- =============================================
+
+-- Seed default categories
+INSERT INTO public.categories (name)
+VALUES
+  ('Web Application'),
+  ('Bot & Automation'),
+  ('Desktop Application'),
+  ('Library'),
+  ('Scripts')
+ON CONFLICT (name) DO NOTHING;
+
+-- Sample project
 INSERT INTO public.projects (title, description, year, category, tech_stack, github_url, live_url)
 VALUES
   (
-    'DaffaPortfolio',
-    'Pamer.co website showcasing my projects and skills.',
+    'Pamer.co',
+    'Portfolio website showcasing projects and skills.',
     2026,
     'Web Application',
     ARRAY['Next.js', 'TailwindCSS', 'Supabase'],
-    'https://github.com/Dappzzz-Dev',
+    'https://github.com/Dappzzz-Dev/Pamer.co',
     NULL
   );

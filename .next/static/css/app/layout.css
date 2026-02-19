@@ -800,6 +800,9 @@ video {
 .mt-20 {
   margin-top: 5rem;
 }
+.mt-3 {
+  margin-top: 0.75rem;
+}
 .mt-4 {
   margin-top: 1rem;
 }
@@ -1380,6 +1383,9 @@ video {
 }
 .hover\:border:hover {
   border-width: 1px;
+}
+.hover\:bg-mint\/20:hover {
+  background-color: rgb(168 197 160 / 0.2);
 }
 .hover\:bg-red-100:hover {
   --tw-bg-opacity: 1;
