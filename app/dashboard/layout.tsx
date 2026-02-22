@@ -29,8 +29,8 @@ export default async function DashboardLayout({
 
         <nav className="flex-1 p-3 space-y-1">
           <Link
-            href="/dashboard"
-            className="flex items-center gap-2.5 px-3 py-2 text-sm font-semibold hover:bg-yellow hover:border border-border transition-colors rounded-sm"
+            href="/dashboard/overview"
+            className="flex items-center gap-2.5 px-3 py-2 text-sm font-semibold hover:bg-yellow transition-colors"
           >
             <LayoutDashboard size={16} /> Overview
           </Link>
