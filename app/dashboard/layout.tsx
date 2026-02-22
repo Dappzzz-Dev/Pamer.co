@@ -35,7 +35,7 @@ export default async function DashboardLayout({
             <LayoutDashboard size={16} /> Overview
           </Link>
           <Link
-            href="/dashboard"
+            href="/dashboard/projects"
             className="flex items-center gap-2.5 px-3 py-2 text-sm font-semibold hover:bg-yellow transition-colors"
           >
             <FolderOpen size={16} /> Projects
