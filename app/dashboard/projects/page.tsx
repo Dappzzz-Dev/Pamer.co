@@ -2,7 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { createServerSupabaseClient } from "@/lib/supabase-server";
 import { Plus, Pencil, Trash2, ExternalLink } from "lucide-react";
-import DeleteButton from "./DeleteButton";
+import DeleteButton from "../DeleteButton";
 
 export default async function DashboardPage() {
   const supabase = await createServerSupabaseClient();
