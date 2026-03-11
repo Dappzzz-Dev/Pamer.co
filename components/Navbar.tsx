@@ -27,7 +27,7 @@ export default function Navbar() {
             />
           </div>
           <span className="font-bold text-lg tracking-tight group-hover:underline">
-            Pamer.co
+            Pamer.co (DaffaDev)
           </span>
         </Link>
         <div className="flex items-center gap-6">
