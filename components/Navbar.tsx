@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 
 const NAV_LINKS = [
@@ -14,8 +15,20 @@ export default function Navbar() {
   return (
     <nav className="sticky top-0 z-50 px-4 py-4">
       <div className="max-w-5xl mx-auto flex items-center justify-between border-2 border-border bg-bg-card shadow-[4px_4px_0px_#1A1A1A] px-6 py-3">
-        <Link href="/" className="font-bold text-xl tracking-tight hover:underline">
-          Pamer.co (DaffaDev)
+        <Link href="/" className="flex items-center gap-3 group">
+          <div className="relative w-10 h-10 border-2 border-border overflow-hidden transition-transform group-hover:scale-110">
+            <Image
+              src="/logo.png"
+              alt="Pamer.co Logo"
+              fill
+              className="object-cover"
+              style={{ imageRendering: 'pixelated' }}
+              priority
+            />
+          </div>
+          <span className="font-bold text-lg tracking-tight group-hover:underline">
+            Pamer.co
+          </span>
         </Link>
         <div className="flex items-center gap-6">
           {NAV_LINKS.map((link) => (

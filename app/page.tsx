@@ -6,9 +6,30 @@ import { createServerSupabaseClient } from "@/lib/supabase-server";
 
 export default async function HomePage() {
   const supabase = await createServerSupabaseClient();
+  
+  // Fetch projects count
   const { count } = await supabase
     .from("projects")
     .select("*", { count: "exact", head: true });
+
+  // Fetch all projects to count unique tech stacks
+  const { data: projects } = await supabase
+    .from("projects")
+    .select("tech_stack");
+
+  // Calculate unique tech stacks
+  const allTechStacks = new Set<string>();
+  projects?.forEach((project) => {
+    project.tech_stack?.forEach((tech: string) => {
+      allTechStacks.add(tech);
+    });
+  });
+  const uniqueTechStacksCount = allTechStacks.size;
+
+  // Calculate years coding from 2023
+  const startYear = 2023;
+  const currentYear = new Date().getFullYear();
+  const yearsCoding = currentYear - startYear;
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -55,9 +76,9 @@ export default async function HomePage() {
         {/* Stats strip */}
         <section className="grid grid-cols-3 gap-4 mb-20">
           {[
-            { icon: Code2, label: "Projects Built", value: count ?? "—" },
-            { icon: Zap, label: "Years Coding", value: "5+" },
-            { icon: Layers, label: "Tech Stacks", value: "10+" },
+            { icon: Code2, label: "Projects Built", value: count ?? 0 },
+            { icon: Zap, label: "Years Coding", value: yearsCoding > 0 ? `${yearsCoding}+` : "1" },
+            { icon: Layers, label: "Tech Stacks", value: uniqueTechStacksCount || 0 },
           ].map(({ icon: Icon, label, value }) => (
             <div key={label} className="brutalist-card p-5 text-center">
               <Icon size={22} className="mx-auto mb-2 opacity-70" />
@@ -109,7 +130,7 @@ export default async function HomePage() {
             Want to see what I&apos;ve built?
           </h2>
           <p className="text-sm text-gray-700 mb-6">
-            Browse through {count ?? "all"} projects across web, desktop, and
+            Browse through {count ?? 0} projects across web, desktop, and
             automation.
           </p>
           <Link

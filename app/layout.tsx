@@ -17,6 +17,11 @@ export const metadata: Metadata = {
   title: "Pamer.co — Project Showcase by DaffaDev",
   description:
     "Portfolio & project showcase by Daffa Farash — junior software engineer from Sukoharjo, Indonesia.",
+  icons: {
+    icon: '/logo.png',
+    shortcut: '/logo.png',
+    apple: '/logo.png',
+  },
 };
 
 export default function RootLayout({
